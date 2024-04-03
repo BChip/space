@@ -15,7 +15,7 @@ jobs:
 
       - name: Update deployment.md
         run: |
-          echo "Deployment triggered at $(date)" >> deployment.md
+          echo "Deployment triggered at $(date)<hr />" >> deployment.md
 
       - name: Commit changes
         run: |

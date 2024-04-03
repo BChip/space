@@ -22,7 +22,7 @@ export class CesiumController {
 
     this.viewer = new Viewer("cesiumContainer", {
       animation: !this.minimalUI,
-      baseLayer: this.createImageryLayer("OfflineHighres"),
+      baseLayer: this.createImageryLayer("Offline"),
       baseLayerPicker: false,
       fullscreenButton: !this.minimalUI,
       fullscreenElement: document.body,
@@ -91,14 +91,6 @@ export class CesiumController {
         alpha: 1,
         base: true,
       },
-      OfflineHighres: {
-        create: () => Cesium.TileMapServiceImageryProvider.fromUrl("data/cesium-assets/imagery/NaturalEarthII", {
-          maximumLevel: 5,
-          credit: "Imagery courtesy Natural Earth",
-        }),
-        alpha: 1,
-        base: true,
-      },
       ArcGis: {
         create: () => Cesium.ArcGisMapServerImageryProvider.fromUrl("https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer"),
         alpha: 1,
@@ -107,14 +99,6 @@ export class CesiumController {
       OSM: {
         create: () => new Cesium.OpenStreetMapImageryProvider({
           url: "https://a.tile.openstreetmap.org/",
-        }),
-        alpha: 1,
-        base: true,
-      },
-      Topo: {
-        create: () => new Cesium.UrlTemplateImageryProvider({
-          url: "https://api.maptiler.com/maps/topo-v2/{z}/{x}/{y}@2x.png?key=tiHE8Ed08u6ZoFjbE32Z",
-          credit: `<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>`,
         }),
         alpha: 1,
         base: true,
@@ -136,32 +120,6 @@ export class CesiumController {
       Tiles: {
         create: () => new Cesium.TileCoordinatesImageryProvider(),
         alpha: 1,
-        base: false,
-      },
-      "GOES-IR": {
-        create: () => new Cesium.WebMapServiceImageryProvider({
-          url: "https://mesonet.agron.iastate.edu/cgi-bin/wms/goes/conus_ir.cgi?",
-          layers: "goes_conus_ir",
-          credit: "Infrared data courtesy Iowa Environmental Mesonet",
-          parameters: {
-            transparent: "true",
-            format: "image/png",
-          },
-        }),
-        alpha: 0.5,
-        base: false,
-      },
-      Nextrad: {
-        create: () => new Cesium.WebMapServiceImageryProvider({
-          url: "https://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi?",
-          layers: "nexrad-n0r",
-          credit: "US Radar data courtesy Iowa Environmental Mesonet",
-          parameters: {
-            transparent: "true",
-            format: "image/png",
-          },
-        }),
-        alpha: 0.5,
         base: false,
       },
     };

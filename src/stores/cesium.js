@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 
 export const useCesiumStore = defineStore("cesium", {
   state: () => ({
-    layers: ["OfflineHighres"],
+    layers: ["Offline"],
     terrainProvider: "None",
     sceneMode: "3D",
     cameraMode: "Fixed",
@@ -18,7 +18,7 @@ export const useCesiumStore = defineStore("cesium", {
       url: "layers",
       serialize: (v) => v.join(","),
       deserialize: (v) => v.split(",").filter((e) => e),
-      default: ["OfflineHighres"],
+      default: ["Offline"],
     }, {
       name: "terrainProvider",
       url: "terrain",

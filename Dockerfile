@@ -1,25 +1,29 @@
-# Use the official Node.js 14 as a parent image
-FROM node:14
+# Use the official Bun image for building the application
+FROM oven/bun:1 as builder
 
-# Set the working directory in the container
 WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json to workdir
-COPY package*.json ./
-
 # Install dependencies
-RUN npm install
+COPY package.json bun.lockb ./
+RUN bun install --frozen-lockfile
 
-# Copy the rest of your application's source code
+# Copy the rest of the application code
 COPY . .
 
-# Build your application
-RUN npm run build
+# Update TLE data
+RUN bun run update-tle
 
-# Expose the port your app runs on
-EXPOSE 8080
+# Build the application
+RUN bun run build
 
-RUN npm run update-tle
+# Use the official Nginx image for serving the application
+FROM nginx:stable-alpine
 
-# Command to run your app using npm
-CMD ["npm", "run", "serve"]
+# Copy the built files from the builder stage to the Nginx html directory
+COPY --from=builder /usr/src/app/dist /usr/share/nginx/html
+
+# Expose the port Nginx will listen on
+EXPOSE 80
+
+# Start Nginx
+CMD ["nginx", "-g", "daemon off;"]

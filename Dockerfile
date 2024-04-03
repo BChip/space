@@ -5,7 +5,7 @@ WORKDIR /usr/src/app
 
 # Install dependencies
 COPY package.json bun.lockb ./
-RUN bun install --frozen-lockfile
+RUN npm install
 
 # Copy the rest of the application code
 COPY . .

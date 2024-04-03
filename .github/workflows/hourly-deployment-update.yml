@@ -1,0 +1,30 @@
+name: Hourly Deployment Update
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+
+jobs:
+  update_deployment_file:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Update deployment.md
+        run: |
+          echo "Deployment triggered at $(date)" >> deployment.md
+
+      - name: Commit changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add deployment.md
+          git commit -m "Update deployment.md with current time and date"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}

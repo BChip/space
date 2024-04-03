@@ -1,11 +1,19 @@
+# Use the official Node.js 14 image for installing dependencies
+FROM node:18 as deps
+
+WORKDIR /usr/src/app
+
+# Install dependencies using npm
+COPY package.json package-lock.json ./
+RUN npm install
+
 # Use the official Bun image for building the application
 FROM oven/bun:1 as builder
 
 WORKDIR /usr/src/app
 
-# Install dependencies
-COPY package.json bun.lockb ./
-RUN npm install
+# Copy the installed dependencies from the previous stage
+COPY --from=deps /usr/src/app/node_modules ./node_modules
 
 # Copy the rest of the application code
 COPY . .
